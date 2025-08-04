@@ -25,6 +25,16 @@ jobs:
         dotnet clean --configuration Release
         dotnet publish ./CenterWindowTray.csproj -c Release -r win-x64 --self-contained true --output ./publish -p:PublishSingleFile=true -p:IncludeNativeLibrariesForSelfExtract=true
 
+    - name: Debug - After publish
+      run: |
+        echo "=== Publish directory structure ==="
+        if (Test-Path "./publish") {
+          Get-ChildItem -Recurse "./publish" | Select-Object FullName, Length
+        } else {
+          echo "Publish directory does not exist!"
+        }
+      shell: pwsh
+
     - name: Upload Release Asset
       uses: actions/upload-release-asset@v1
       env:
